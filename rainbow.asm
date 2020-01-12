@@ -8,6 +8,8 @@
     seg code
     org $F000
 
+BGColor equ $81
+
 Start:
     CLEAN_START
 
@@ -33,9 +35,11 @@ LoopVBlank:
     sta VBLANK
 
     ldx #192            ; Drawing 192 colored lines
+    sta BGColor
 LoopVisible:
-    stx COLUBK
+    sta COLUBK
     sta WSYNC
+    adc #2
     dex
     bne LoopVisible
 
