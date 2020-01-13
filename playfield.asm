@@ -11,10 +11,10 @@
 Reset:
     CLEAN_START
 
-    ldx #$80
+    ldx #$98
     stx COLUBK
 
-    lda #$1C
+    lda #$2E
     sta COLUPF
 
 StartFrame:
