@@ -78,6 +78,8 @@ DivideLoop:
     sta WSYNC      ; wait for next scanline
     sta HMOVE      ; apply the fine position offset
 
+    inx
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Let the TIA output the remaining 35 lines of VBLANK (37 - 2)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -128,7 +130,12 @@ Overscan:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Increment X coordinate before next frame for animation.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    txa
+    and #1
+    bne SkipMove
     inc P0XPos
+SkipMove:
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Loop to next frame
@@ -140,28 +147,28 @@ Overscan:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 P0Bitmap:
     byte #%00000000
-    byte #%00011100
-    byte #%00111110
-    byte #%00101110
-    byte #%00101110
-    byte #%00110110
-    byte #%00011100
-    byte #%00001000
     byte #%00010000
+    byte #%00001000
+    byte #%00011100
+    byte #%00110110
+    byte #%00101110
+    byte #%00101110
+    byte #%00111110
+    byte #%00011100
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Lookup table for the player colors.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 P0Color:
     byte #$00
-    byte #$52
-    byte #$52
-    byte #$52
-    byte #$52
-    byte #$52
-    byte #$52
     byte #$02
     byte #$02
+    byte #$52
+    byte #$52
+    byte #$52
+    byte #$52
+    byte #$52
+    byte #$52
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Complete ROM size
