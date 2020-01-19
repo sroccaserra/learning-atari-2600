@@ -34,15 +34,15 @@ VERSION_VCS         = 105
 ;                       which was broken by the use of segments in this file, as
 ;                       reported by Manuel Polik on [stella] 11/MAY/2003
 ; 1.02  22/MAR/2003     Added TIMINT($285)
-; 1.01	        		Constant offset added to allow use for 3F-style bankswitching
-;						 - define TIA_BASE_ADDRESS as $40 for Tigervision carts, otherwise
-;						   it is safe to leave it undefined, and the base address will
-;						   be set to 0.  Thanks to Eckhard Stolberg for the suggestion.
+; 1.01                  Constant offset added to allow use for 3F-style bankswitching
+;                        - define TIA_BASE_ADDRESS as $40 for Tigervision carts, otherwise
+;                          it is safe to leave it undefined, and the base address will
+;                          be set to 0.  Thanks to Eckhard Stolberg for the suggestion.
 ;                          Note, may use -DLABEL=EXPRESSION to define TIA_BASE_ADDRESS
 ;                        - register definitions are now generated through assignment
 ;                          in uninitialised segments.  This allows a changeable base
 ;                          address architecture.
-; 1.0	22/MAR/2003		Initial release
+; 1.0   22/MAR/2003     Initial release
 
 
 ;-------------------------------------------------------------------------------
@@ -54,9 +54,9 @@ VERSION_VCS         = 105
 ; The reason is that this bankswitching scheme treats any access to locations
 ; < $40 as a bankswitch.
 
-			IFNCONST TIA_BASE_ADDRESS
-TIA_BASE_ADDRESS	= 0
-			ENDIF
+            IFNCONST TIA_BASE_ADDRESS
+TIA_BASE_ADDRESS    = 0
+            ENDIF
 
 ; Note: The address may be defined on the command-line using the -D switch, eg:
 ; dasm.exe code.asm -DTIA_BASE_ADDRESS=$40 -f3 -v5 -ocode.bin
@@ -82,18 +82,18 @@ TIA_BASE_WRITE_ADDRESS = TIA_BASE_ADDRESS
 
 ;-------------------------------------------------------------------------------
 
-			SEG.U TIA_REGISTERS_WRITE
-			ORG TIA_BASE_WRITE_ADDRESS
+            SEG.U TIA_REGISTERS_WRITE
+            ORG TIA_BASE_WRITE_ADDRESS
 
-	; DO NOT CHANGE THE RELATIVE ORDERING OF REGISTERS!
+    ; DO NOT CHANGE THE RELATIVE ORDERING OF REGISTERS!
 
 VSYNC       ds 1    ; $00   0000 00x0   Vertical Sync Set-Clear
-VBLANK		ds 1	; $01   xx00 00x0   Vertical Blank Set-Clear
-WSYNC		ds 1	; $02   ---- ----   Wait for Horizontal Blank
-RSYNC		ds 1	; $03   ---- ----   Reset Horizontal Sync Counter
-NUSIZ0		ds 1	; $04   00xx 0xxx   Number-Size player/missle 0
-NUSIZ1		ds 1	; $05   00xx 0xxx   Number-Size player/missle 1
-COLUP0		ds 1	; $06   xxxx xxx0   Color-Luminance Player 0
+VBLANK      ds 1    ; $01   xx00 00x0   Vertical Blank Set-Clear
+WSYNC       ds 1    ; $02   ---- ----   Wait for Horizontal Blank
+RSYNC       ds 1    ; $03   ---- ----   Reset Horizontal Sync Counter
+NUSIZ0      ds 1    ; $04   00xx 0xxx   Number-Size player/missle 0
+NUSIZ1      ds 1    ; $05   00xx 0xxx   Number-Size player/missle 1
+COLUP0      ds 1    ; $06   xxxx xxx0   Color-Luminance Player 0
 COLUP1      ds 1    ; $07   xxxx xxx0   Color-Luminance Player 1
 COLUPF      ds 1    ; $08   xxxx xxx0   Color-Luminance Playfield
 COLUBK      ds 1    ; $09   xxxx xxx0   Color-Luminance Background
@@ -135,10 +135,10 @@ CXCLR       ds 1    ; $2C   ---- ----   Clear Collision Latches
 
 ;-------------------------------------------------------------------------------
 
-			SEG.U TIA_REGISTERS_READ
-			ORG TIA_BASE_READ_ADDRESS
+            SEG.U TIA_REGISTERS_READ
+            ORG TIA_BASE_READ_ADDRESS
 
-                    ;											bit 7   bit 6
+                    ;                                           bit 7   bit 6
 CXM0P       ds 1    ; $00       xx00 0000       Read Collision  M0-P1   M0-P0
 CXM1P       ds 1    ; $01       xx00 0000                       M1-P0   M1-P1
 CXP0FB      ds 1    ; $02       xx00 0000                       P0-PF   P0-BL
@@ -151,44 +151,44 @@ INPT0       ds 1    ; $08       x000 0000       Read Pot Port 0
 INPT1       ds 1    ; $09       x000 0000       Read Pot Port 1
 INPT2       ds 1    ; $0A       x000 0000       Read Pot Port 2
 INPT3       ds 1    ; $0B       x000 0000       Read Pot Port 3
-INPT4       ds 1    ; $0C		x000 0000       Read Input (Trigger) 0
-INPT5       ds 1	; $0D		x000 0000       Read Input (Trigger) 1
+INPT4       ds 1    ; $0C       x000 0000       Read Input (Trigger) 0
+INPT5       ds 1    ; $0D       x000 0000       Read Input (Trigger) 1
 
 ;-------------------------------------------------------------------------------
 
-			SEG.U RIOT
-			ORG $280
+            SEG.U RIOT
+            ORG $280
 
-	; RIOT MEMORY MAP
+    ; RIOT MEMORY MAP
 
 SWCHA       ds 1    ; $280      Port A data register for joysticks:
-					;			Bits 4-7 for player 1.  Bits 0-3 for player 2.
+                    ;           Bits 4-7 for player 1.  Bits 0-3 for player 2.
 
 SWACNT      ds 1    ; $281      Port A data direction register (DDR)
-SWCHB       ds 1    ; $282		Port B data (console switches)
+SWCHB       ds 1    ; $282      Port B data (console switches)
 SWBCNT      ds 1    ; $283      Port B DDR
-INTIM       ds 1    ; $284		Timer output
+INTIM       ds 1    ; $284      Timer output
 
-TIMINT  	ds 1	; $285
+TIMINT      ds 1    ; $285
 
-		; Unused/undefined registers ($285-$294)
+        ; Unused/undefined registers ($285-$294)
 
-			ds 1	; $286
-			ds 1	; $287
-			ds 1	; $288
-			ds 1	; $289
-			ds 1	; $28A
-			ds 1	; $28B
-			ds 1	; $28C
-			ds 1	; $28D
-			ds 1	; $28E
-			ds 1	; $28F
-			ds 1	; $290
-			ds 1	; $291
-			ds 1	; $292
-			ds 1	; $293
+            ds 1    ; $286
+            ds 1    ; $287
+            ds 1    ; $288
+            ds 1    ; $289
+            ds 1    ; $28A
+            ds 1    ; $28B
+            ds 1    ; $28C
+            ds 1    ; $28D
+            ds 1    ; $28E
+            ds 1    ; $28F
+            ds 1    ; $290
+            ds 1    ; $291
+            ds 1    ; $292
+            ds 1    ; $293
 
-TIM1T       ds 1    ; $294		set 1 clock interval
+TIM1T       ds 1    ; $294      set 1 clock interval
 TIM8T       ds 1    ; $295      set 8 clock interval
 TIM64T      ds 1    ; $296      set 64 clock interval
 T1024T      ds 1    ; $297      set 1024 clock interval
